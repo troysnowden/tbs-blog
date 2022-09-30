@@ -75,7 +75,6 @@ a:hover {
 }
 
 nav {
-    background-color: var(--dkblue);
     font-family: var(--mono);
     font-size: 80%;
     padding: 1rem;
@@ -109,4 +108,39 @@ nav a {
 
 nav a:hover {
     color: var(--magenta);
+}
+
+.button {
+    background-color: var(--magenta);
+    padding: .5rem;
+    border-radius: 5px;
+}
+
+.button:hover {
+    color: var(--white);
+    background-color: var(--hotmag);
+}
+
+footer {
+    background-color: var(--dkblue);
+    text-align: center;
+    padding: 2rem;
+}
+
+footer p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+@media (min-width: 850px) {
+    nav {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    nav li:first-child {
+        flex-basis: auto;
+        text-align: left;
+        margin-right: auto;
+    }
 }
