@@ -11,13 +11,16 @@
 
     <body>
         <%- include('partials/navbar.ejs') %>
-        <section id="intro">
-            <p class="name">Hi, this is <span>tbhTBS</span></p>
 
-            <h2>I'm a software engineer</h2>
-            <p>interested in all things creative.</p>
-            
-            <p>This is where I write.</p>
+        <section id="intro">
+            <h2>New Post</h2>
+            <!-- Text area matching the selector specified in the TinyMCE configuration -->
+            <textarea id="my-expressjs-tinymce-app">Hello, World!</textarea>
+        
+            <!-- Script element sourcing TinyMCE -->
+            <script type="application/javascript" src= "/tinymce/tinymce.min.js"></script>
+            <!-- Script element sourcing the TinyMCE configuration -->
+            <script type="application/javascript" src= "js/my-tinymce-config.js"></script>
         </section>
 
         <section id="contact">
