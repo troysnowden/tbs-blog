@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>tbhTBS - Home</title>
+        <link rel="stylesheet" href="css/index.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Oxygen+Mono&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Oxygen&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <%- include('partials/navbar.ejs') %>
+        <section id="intro">
+            <form id="register" action="register" method="post">
+                <h2>Register</h2>
+                <input type="text" name="firstname" placeholder="First Name" required>
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="submit">
+            </form>
+        </section>
+
+        <section id="contact">
+            <h2>Contact Me</h2>
+            <p>Feel free to reach out with feedback, questions or just to say hello!</p>
+            <p><a href="#">Email me</a></p>
+        </section>
+
+        <%- include('partials/footer.ejs') %>
+    </body>
+</html>

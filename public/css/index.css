@@ -132,6 +132,19 @@ footer p {
     line-height: 1.5;
 }
 
+#register {
+    text-align: center;
+}
+
+#register h2 {
+    padding: 2rem;
+}
+
+input {
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+
 @media (min-width: 850px) {
     nav {
         max-width: 1200px;
