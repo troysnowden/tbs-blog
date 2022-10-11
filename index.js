@@ -54,9 +54,8 @@ app.post('/register', (req, res) => {
 
     const newUser = new User({
         firstName: user.firstname,
-        username: user.username,
+        username: user.username.toLowerCase(),
         password: user.password,
-        isWriter: true
     })
 
     User.create(newUser);
@@ -64,13 +63,44 @@ app.post('/register', (req, res) => {
     res.redirect('/');
 })
 
+app.get('/login', (req, res) => {
+    res.render('login');
+})
+
+app.post('/login', async(req, res) => {
+    //firstname, username, password
+    const user = req.body;
+    console.log(user.username);
+    console.log(user.password);
+    const existingUser = await User.findOne({ 
+        username: user.username.toLowerCase(),
+        password: user.password 
+    })
+    console.log(existingUser);
+
+    if (existingUser) {
+        return res.render('index', 
+        {
+            user: {
+                id: existingUser._id,
+                firstName: existingUser.firstName,
+                username: existingUser.username,
+                isWriter: existingUser.isWriter
+            }
+        })
+    } else {
+        return res.redirect('/login')
+    }   
+})
+
 app.get('*', (req, res) => {
     res.send("404 Not Found")
 })
 
-function checkInvalidUser(user) {
+async function checkInvalidUser(user) {
     const invalidInputs = ["", undefined, null]
-    return invalidInputs.includes(user.firstname.trim()) || 
+    const existingUser = await User.findOne({ username: user.username.toLowerCase() });
+    return existingUser ? false : invalidInputs.includes(user.firstname.trim()) || 
     invalidInputs.includes(user.username.trim()) ||
     invalidInputs.includes(user.password.trim());
 }
