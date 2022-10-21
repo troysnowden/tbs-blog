@@ -4,6 +4,7 @@ const path = require('path');
 const session = require('express-session')
 const Post = require('./models/post');
 const User = require('./models/user');
+const Video = require('./models/video');
 require('dotenv').config({path: __dirname + '/.env'})
 
 const app = express();
@@ -81,6 +82,18 @@ app.get('/articles', async(req, res) => {
 app.get('/article/:id', async(req, res) => {
     const article = await Post.findById(req.params.id);
     res.render('article', {user: req.session.user, article: article});
+})
+
+app.get('/videos', async(req, res) => {
+    const videos = await Video.find();
+    res.render('videos', {user: req.session.user, videos: videos});
+})
+
+app.post('/video', async(req, res) => {
+    const { title } = req.body;
+    const { link } = req.body;
+    await Video.create({title: title, link: link});
+    res.redirect('videos');
 })
 
 app.get('/register', (req, res) => {
