@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose');
 const path = require('path');
+const session = require('express-session')
 const User = require('./models/user');
 require('dotenv').config({path: __dirname + '/.env'})
 
@@ -13,6 +14,13 @@ app.use(express.urlencoded({ extended: true, limit: "30mb" }));
 app.use(express.json({ limit: "30mb" }));
 
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+
+const sessionOptions = {
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}
+app.use(session(sessionOptions));
 
 mongoose.connect(process.env.DB_URL, { useNewUrlParser: true })
     .then(() => {
@@ -28,22 +36,23 @@ app.listen(8080, function () {
 })
 
 app.get('/', (req, res) => {
-    res.render('index');
+    const { user } = req.session;
+    res.render('index', {user: user});
 })
 
 app.get('/about', (req, res) => {
-    res.render('about');
+    res.render('about', {user: req.session.user_id});
 })
 
 app.get('/create', (req, res) => {
-    res.render('create');
+    res.render('create', {user: req.session.user_id});
 })
 
 app.get('/register', (req, res) => {
-    res.render('register');
+    res.render('register', {user: req.session.user_id});
 })
 
-app.post('/register', (req, res) => {
+app.post('/register', async(req, res) => {
     //firstname, username, password
     const user = req.body;
     
@@ -52,45 +61,50 @@ app.post('/register', (req, res) => {
         return res.redirect("/register");
     }
 
-    const newUser = new User({
+    let newUser = new User({
         firstName: user.firstname,
         username: user.username.toLowerCase(),
         password: user.password,
     })
 
-    User.create(newUser);
+    // check if user exists with username
+    if (await User.findOne({username: user.username.toLowerCase()})) {
+        return res.redirect("/register")
+    }
 
-    res.redirect('/');
+    newUser = User.create(newUser);
+    req.session.user_id = newUser._id;
+    res.redirect('/', {user: req.session.user_id});
 })
 
 app.get('/login', (req, res) => {
-    res.render('login');
+    res.render('login', {user: req.session.user_id});
 })
 
 app.post('/login', async(req, res) => {
-    //firstname, username, password
+    //username, password
     const user = req.body;
-    console.log(user.username);
-    console.log(user.password);
+
     const existingUser = await User.findOne({ 
         username: user.username.toLowerCase(),
         password: user.password 
     })
-    console.log(existingUser);
 
     if (existingUser) {
-        return res.render('index', 
-        {
-            user: {
-                id: existingUser._id,
-                firstName: existingUser.firstName,
-                username: existingUser.username,
-                isWriter: existingUser.isWriter
-            }
-        })
+        req.session.user_id = existingUser._id;
+        return res.render('index', {user: req.session.user_id})
     } else {
         return res.redirect('/login')
     }   
+})
+
+app.get('/create', (req, res) => {
+    res.render('create', {user: req.session.user_id});
+})
+
+app.get('/logout', (req, res) => {
+    req.session.user_id = undefined;
+    res.redirect('/', {user: req.session.user_id});
 })
 
 app.get('*', (req, res) => {
