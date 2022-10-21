@@ -10,13 +10,12 @@ const postSchema = new mongoose.Schema({
         required: true
     },
     date: {
-        type: Date,
+        type: String,
     },
     author: {
-        type: Boolean,
-        default: false
+        type: String,
     }
 })
 
-const Post = mongoose.model('User', postSchema);
+const Post = mongoose.model('Post', postSchema);
 module.exports = Post;

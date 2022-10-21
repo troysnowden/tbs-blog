@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose');
 const path = require('path');
 const session = require('express-session')
+const Post = require('./models/post');
 const User = require('./models/user');
 require('dotenv').config({path: __dirname + '/.env'})
 
@@ -36,20 +37,54 @@ app.listen(8080, function () {
 })
 
 app.get('/', (req, res) => {
-    const { user } = req.session;
-    res.render('index', {user: user});
+    res.render('index', {user: req.session.user});
 })
 
 app.get('/about', (req, res) => {
-    res.render('about', {user: req.session.user_id});
+    res.render('about', {user: req.session.user});
 })
 
 app.get('/create', (req, res) => {
-    res.render('create', {user: req.session.user_id});
+    if (req.session.user && req.session.user.isWriter) {
+        return res.render('create', {user: req.session.user});
+    } else {
+        return res.redirect('/');
+    }
+})
+
+app.post('/create', async(req, res) => {
+    if (req.session.user && req.session.user.isWriter) {
+        const { title } = req.body;
+        const { body } = req.body;
+        const currentUser = await User.findById(req.session.user_id);
+        if (currentUser) {
+            let newPost = new Post({
+                title: title,
+                body: body,
+                author: currentUser.username,
+                date: new Date().toLocaleDateString("en-GB")
+            })
+            Post.create(newPost);
+            return res.redirect('/');
+        }
+        return res.redirect('/create');
+    } else {
+        return res.redirect('/');
+    }
+})
+
+app.get('/articles', async(req, res) => {
+    const articles = await Post.find();
+    res.render('articles', {user: req.session.user, articles: articles});
+})
+
+app.get('/article/:id', async(req, res) => {
+    const article = await Post.findById(req.params.id);
+    res.render('article', {user: req.session.user, article: article});
 })
 
 app.get('/register', (req, res) => {
-    res.render('register', {user: req.session.user_id});
+    res.render('register', {user: req.session.user});
 })
 
 app.post('/register', async(req, res) => {
@@ -73,12 +108,12 @@ app.post('/register', async(req, res) => {
     }
 
     newUser = User.create(newUser);
-    req.session.user_id = newUser._id;
-    res.redirect('/', {user: req.session.user_id});
+    req.session.user = { id: existingUser._id, isWriter: existingUser.isWriter };
+    res.redirect('/', {user: req.session.user});
 })
 
 app.get('/login', (req, res) => {
-    res.render('login', {user: req.session.user_id});
+    res.render('login', {user: req.session.user});
 })
 
 app.post('/login', async(req, res) => {
@@ -91,20 +126,16 @@ app.post('/login', async(req, res) => {
     })
 
     if (existingUser) {
-        req.session.user_id = existingUser._id;
-        return res.render('index', {user: req.session.user_id})
+        req.session.user = { id: existingUser._id, isWriter: existingUser.isWriter };
+        return res.render('index', {user: req.session.user})
     } else {
         return res.redirect('/login')
     }   
 })
 
-app.get('/create', (req, res) => {
-    res.render('create', {user: req.session.user_id});
-})
-
 app.get('/logout', (req, res) => {
-    req.session.user_id = undefined;
-    res.redirect('/', {user: req.session.user_id});
+    req.session.user = undefined;
+    res.redirect('/');
 })
 
 app.get('*', (req, res) => {

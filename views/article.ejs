@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>tbhTBS - <%= article.title %></title>
+        <link rel="stylesheet" href="/css/index.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Oxygen+Mono&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Oxygen&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <%- include('partials/navbar.ejs') %>
+
+        <section id="post">
+            <h2><%= article.title %></h2>
+            <%- article.body %>
+        </section>
+
+        <%- include('partials/footer.ejs') %>
+    </body>
+</html>

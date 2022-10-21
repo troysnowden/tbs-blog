@@ -1,10 +1,13 @@
 <nav>
     <ul>
-        <li><h1><a href="/">tbhTBS - <%= user %></a></h1></li>
-        <li><a href="#">Articles</a></li>
+        <li><h1><a href="/">tbhTBS</a></h1></li>
+        <li><a href="/articles">Articles</a></li>
         <li><a href="#">Videos</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <% if (user && user.isWriter) { %>
+            <li><a href="/create">Create</a></li>
+        <% } else { %>
+            <li><a href="/about">About</a></li>
+        <% } %>
         <% if (user) { %>
             <li><a href="/logout">Logout</a></li>
         <% } else { %>

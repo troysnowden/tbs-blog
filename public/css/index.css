@@ -145,6 +145,24 @@ input {
     padding: 0.5rem;
 }
 
+#create input {
+    margin-bottom: 2.5rem;
+    margin-top: 1rem;
+}
+
+#create input:nth-of-type(1) {
+    width: 50%;
+}
+
+#post {
+    background-color: var(--white);
+    padding: 2rem;
+}
+
+#post h2 {
+    color: var(--black);
+}
+
 @media (min-width: 850px) {
     nav {
         max-width: 1200px;

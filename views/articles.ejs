@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>tbhTBS - Create</title>
+        <title>tbhTBS - Articles</title>
         <link rel="stylesheet" href="css/index.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,12 +13,11 @@
         <%- include('partials/navbar.ejs') %>
 
         <section id="intro">
-            <form id="create" action="create" method="post">
-                <input type="text" id="title" name="title" placeholder="Title" required>
-                <!-- Text area matching the selector specified in the TinyMCE configuration -->
-                <textarea id="my-expressjs-tinymce-app" name="body"></textarea>
-                <input id="submit" type="submit">
-            </form>
+            <ul>
+                <% articles.forEach(article => { %>
+                    <li><p><a href="/article/<%= article._id%>"><%= article.title %></a></p></li>
+                <% }) %>
+            </ul>
         </section>
 
         <%- include('partials/footer.ejs') %>
