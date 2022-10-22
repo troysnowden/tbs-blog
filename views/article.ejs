@@ -15,6 +15,13 @@
         <section id="post">
             <h2><%= article.title %></h2>
             <%- article.body %>
+            <p>by <%= article.author %></p> 
+            <% if (user) { %>
+                <form action="/article/save" method="post">
+                    <input type="hidden" name="article" value="<%=article._id %>">
+                    <input type="submit" value="Save Post">
+                </form>
+            <% } %>
         </section>
 
         <%- include('partials/footer.ejs') %>

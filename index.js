@@ -84,6 +84,30 @@ app.get('/article/:id', async(req, res) => {
     res.render('article', {user: req.session.user, article: article});
 })
 
+app.post('/article/save', async(req, res) => {
+    const currentUser = await User.findById(req.session.user.id);
+    const article = await Post.findById(req.body.article);
+    if (!currentUser || !article) {
+        return res.redirect('/articles');
+    }
+    if (currentUser.savedArticles.includes(req.body.article)) {
+        return res.redirect(`/article/${req.body.article}`);
+    }
+    await User.findByIdAndUpdate(req.session.user.id, {
+        savedArticles: [...currentUser.savedArticles, req.body.article]
+    })
+    return res.redirect(`/article/${req.body.article}`);
+})
+
+app.get('/saved-articles', async(req, res) => {
+    const savedArticles = (await User.findById(req.session.user.id)).savedArticles;
+    if (!savedArticles) {
+        return res.redirect('/');
+    }
+    const articles = await Promise.all(savedArticles.map(async (article) => Post.findById(article)));
+    res.render('articles', {user: req.session.user, articles: articles});
+})
+
 app.get('/videos', async(req, res) => {
     const videos = await Video.find();
     res.render('videos', {user: req.session.user, videos: videos});
@@ -93,7 +117,7 @@ app.post('/video', async(req, res) => {
     const { title } = req.body;
     const { link } = req.body;
     await Video.create({title: title, link: link});
-    res.redirect('videos');
+    res.redirect('/videos');
 })
 
 app.get('/register', (req, res) => {
@@ -140,7 +164,7 @@ app.post('/login', async(req, res) => {
 
     if (existingUser) {
         req.session.user = { id: existingUser._id, isWriter: existingUser.isWriter };
-        return res.render('index', {user: req.session.user})
+        return res.redirect('/');
     } else {
         return res.redirect('/login')
     }   

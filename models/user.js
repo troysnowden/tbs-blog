@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema({
     isWriter: {
         type: Boolean,
         default: false
+    },
+    savedArticles: {
+        type: [String]
     }
 })
 
