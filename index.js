@@ -81,6 +81,9 @@ app.get('/articles', async(req, res) => {
 
 app.get('/article/:id', async(req, res) => {
     const article = await Post.findById(req.params.id);
+    if (!article) {
+        return res.redirect('/');
+    }
     res.render('article', {user: req.session.user, article: article});
 })
 
@@ -118,35 +121,6 @@ app.post('/video', async(req, res) => {
     const { link } = req.body;
     await Video.create({title: title, link: link});
     res.redirect('/videos');
-})
-
-app.get('/register', (req, res) => {
-    res.render('register', {user: req.session.user});
-})
-
-app.post('/register', async(req, res) => {
-    //firstname, username, password
-    const user = req.body;
-    
-    // check all inputs are filled in
-    if (checkInvalidUser(user)) {
-        return res.redirect("/register");
-    }
-
-    let newUser = new User({
-        firstName: user.firstname,
-        username: user.username.toLowerCase(),
-        password: user.password,
-    })
-
-    // check if user exists with username
-    if (await User.findOne({username: user.username.toLowerCase()})) {
-        return res.redirect("/register")
-    }
-
-    newUser = User.create(newUser);
-    req.session.user = { id: existingUser._id, isWriter: existingUser.isWriter };
-    res.redirect('/', {user: req.session.user});
 })
 
 app.get('/login', (req, res) => {

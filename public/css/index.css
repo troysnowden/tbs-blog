@@ -3,12 +3,23 @@
     --black: #171321;
     --dkblue: #0d314b;
     --plum: #4b0d49;
+    --independence: #3A405A;
+    --maya-blue: #78C3FB;
+    --umber: #685044;
+    --persian-indigo: #27187E;
+    --cornflower-blue: #758BFD;
+    --gold-fusion: #79745C;
+    --russian-green: #709176;
+    --jet: #2F2F2F;
+    --sinopia: #BA5A31;
+    --coffee: #694A38;
     --hotmag: #ff17e4;
     --magenta: #e310cb;
     --aqua: #86fbfb;
-    --white: #f7f8fa;
+    --white: #f9fbff;
+    --book-white: #fdfdf2;
     --font-size: 1.3rem;
-    --mono: "Oxygen mono", monospace;
+    --caslon: "Libre Caslon Text", serif;
     --sans: "Oxygen", sans-serif;
 }
 /* border box model: https://css-tricks.com/box-sizing/ */
@@ -24,9 +35,9 @@ html {
 body {
     padding: 0;
     margin: 0;
-    font-family: var(--sans);
-    background-color: var(--black);
-    color: var(--white);
+    font-family: var(--caslon);
+    background-color: var(--book-white);
+    color: var(--black);
     font-size: var(--font-size);
 }
 
@@ -35,11 +46,10 @@ h1, h2, h3 {
 }
 
 a {
-    color: var(--magenta);
+    color: var(--plum);
 }
 
 a:hover {
-    color: var(--hotmag);
     text-decoration: none;
 }
 
@@ -53,7 +63,7 @@ a:hover {
 }
 
 #intro .name {
-    font-family: var(--mono);
+    font-family: var(--caslon);
 }
 
 #intro h2 {
@@ -68,14 +78,16 @@ a:hover {
 }
 
 #contact {
-    background-color: var(--plum);
+    border-top-color: var(--coffee);
+    border-top-style:groove;
+    background-color: var(--white);
     padding: 3rem 0;
     text-align: center;
     margin: 0 auto;
 }
 
 nav {
-    font-family: var(--mono);
+    font-family: var(--caslon);
     font-size: 80%;
     padding: 1rem;
 }
@@ -101,13 +113,13 @@ nav li:first-child {
 }
 
 nav a {
-    color: var(--white);
+    color: var(--black);
     text-decoration: none;
     display: block;
 }
 
 nav a:hover {
-    color: var(--magenta);
+    text-decoration:underline;
 }
 
 .button {
@@ -122,7 +134,8 @@ nav a:hover {
 }
 
 footer {
-    background-color: var(--dkblue);
+    background-color: var(--jet);
+    color: var(--white);
     text-align: center;
     padding: 2rem;
 }
