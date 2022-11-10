@@ -37,8 +37,10 @@ app.listen(8080, function () {
     console.log('Application Started')
 })
 
-app.get('/', (req, res) => {
-    res.render('index', {user: req.session.user});
+app.get('/', async(req, res) => {
+    const latestArticle = await Post.findOne();
+    const latestVideo = await Video.findOne();
+    res.render('index', {user: req.session.user, latestArticle: latestArticle, latestVideo: latestVideo});
 })
 
 app.get('/about', (req, res) => {

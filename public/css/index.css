@@ -54,12 +54,14 @@ a:hover {
 }
 
 #intro {
+    text-align: center;
     padding-bottom: 10rem;
 }
 
 #intro p {
     font-size: 1rem;
     line-height: 1.5;
+    margin: 2rem;
 }
 
 #intro .name {
@@ -73,8 +75,25 @@ a:hover {
 .name span {
     font-family: var(--sans);
     font-size: 4rem;
-    color: var(--aqua);
     display: block;
+    margin-bottom: -1rem;
+}
+
+#latest {
+    margin-top: -5rem;
+    padding: 2rem;
+}
+  
+.row {
+    display: flex;
+}
+  
+.column {
+    flex: 50%;
+}
+
+.column:last-child {
+    text-align: right;
 }
 
 #contact {
@@ -168,8 +187,24 @@ input {
 }
 
 #post {
-    background-color: var(--white);
-    padding: 2rem;
+    margin: 2rem;
+}
+
+#articles {
+    margin: 2rem;
+    /* letter-spacing:2rem; */
+}
+
+#articles ul {
+    list-style-type: none;
+}
+
+#articles a {
+    text-decoration: none;
+}
+
+p #article-peek {
+    letter-spacing:normal;
 }
 
 #post h2 {
@@ -188,3 +223,9 @@ input {
         margin-right: auto;
     }
 }
+
+@media screen and (max-width: 600px) {
+    #latest .column {
+      width: 100%;
+    }
+  }

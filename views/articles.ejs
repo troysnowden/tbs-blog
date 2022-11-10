@@ -3,15 +3,18 @@
     <head>
         <title>tbhTBS - Articles</title>
         <link rel="stylesheet" href="css/index.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text&display=swap" rel="stylesheet">
     </head>
 
     <body>
         <%- include('partials/navbar.ejs') %>
 
-        <section id="intro">
+        <section id="articles">
             <ul>
                 <% articles.forEach(article => { %>
-                    <li><p><a href="/article/<%= article._id%>"><%= article.title %></a></p></li>
+                    <p><li><a href="/article/<%= article._id%>"><%= article.title %></a></li></p>
                 <% }) %>
             </ul>
         </section>
